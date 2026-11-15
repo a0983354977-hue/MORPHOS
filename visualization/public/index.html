@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MORPHOS Studio — neural state space</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/studio.css">
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<!-- HUD ---------------------------------------------------------- -->
+<div id="hud" class="panel">
+  <div class="row title">
+    <span class="dot" id="status-dot"></span>
+    <b>MORPHOS STUDIO</b>
+    <span class="muted" id="run-name">offline</span>
+  </div>
+  <div class="grid">
+    <div><label>step</label><span id="h-step" class="val">0</span></div>
+    <div><label>t</label><span id="h-t" class="val">0.000s</span></div>
+    <div><label>residual</label><span id="h-resid" class="val">—</span></div>
+    <div><label>resid EMA</label><span id="h-ema" class="val">—</span></div>
+    <div><label>firing</label><span id="h-rate" class="val">—</span></div>
+    <div><label>conf</label><span id="h-conf" class="val">—</span></div>
+    <div><label>anomaly</label><span id="h-anom" class="val">none</span></div>
+    <div><label>fps</label><span id="h-fps" class="val">—</span></div>
+  </div>
+  <div class="row" id="legend">
+    <span><i class="sw actual"></i>actual</span>
+    <span><i class="sw pred"></i>predicted</span>
+    <span><i class="sw branch"></i>branch</span>
+    <span><i class="sw anom"></i>anomaly</span>
+  </div>
+</div>
+
+<!-- controls ----------------------------------------------------- -->
+<div id="controls" class="panel">
+  <div class="ctl">
+    <button id="btn-play" title="play / pause">❚❚</button>
+    <button id="btn-live" title="follow live stream">●</button>
+    <input type="range" id="scrub" min="0" max="0" value="0">
+    <span id="pos" class="muted">0 / 0</span>
+  </div>
+  <div class="ctl">
+    <label>speed <input type="range" id="speed" min="1" max="60" value="12"></label>
+    <label>trail <input type="range" id="trail" min="200" max="8000" value="2400"></label>
+  </div>
+  <div class="ctl toggles">
+    <label><input type="checkbox" id="t-pred" checked> predictions</label>
+    <label><input type="checkbox" id="t-resid" checked> residual ribbon</label>
+    <label><input type="checkbox" id="t-branch" checked> branch tree</label>
+    <label><input type="checkbox" id="t-grid" checked> grid</label>
+  </div>
+  <div class="ctl">
+    <span class="muted">counterfactual branch:</span>
+    <select id="branch-mode">
+      <option value="none">none</option>
+      <option value="gain">recurrent gain ×1.6</option>
+      <option value="noise">input noise σ=0.35</option>
+      <option value="step">input step +0.8</option>
+      <option value="dropout">signal dropout</option>
+    </select>
+    <button id="btn-branch" title="spawn branch from current step">fork</button>
+  </div>
+</div>
+
+<!-- boot --------------------------------------------------------- -->
+<div id="boot" class="panel">
+  <b>MORPHOS STUDIO</b>
+  <p id="boot-msg">loading three.js …</p>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "/vendor/three.module.min.js" } }
+</script>
+<script type="module" src="/studio.js"></script>
+</body>
+</html>

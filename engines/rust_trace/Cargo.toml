@@ -1,0 +1,30 @@
+[package]
+name = "rust_trace"
+version = "0.5.0"
+edition = "2021"
+description = "MORPHOS high-performance binary event parser + zero-copy ring buffer"
+license = "Apache-2.0"
+repository = "https://github.com/morphos-labs/morphos"
+default-run = "morphos-trace"
+
+[[bin]]
+name = "morphos-trace"
+path = "src/bin/main.rs"
+
+[[bin]]
+name = "morphos-cpubench"
+path = "src/bin/cpubench.rs"
+
+[lib]
+name = "rust_trace"
+
+crate-type = ["rlib", "cdylib"]
+
+[dependencies]
+memmap2 = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

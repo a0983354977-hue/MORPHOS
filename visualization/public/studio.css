@@ -1,0 +1,154 @@
+/* MORPHOS Studio - dark research-console styling.
+   Deliberately dense and monospace: this is a diagnostic instrument, not a
+   marketing page. Panels stay out of the way of the 3D canvas. */
+
+:root {
+  --bg: #070910;
+  --panel: rgba(12, 16, 24, 0.82);
+  --border: #1d2736;
+  --text: #c9d4e3;
+  --muted: #6b7c93;
+  --accent: #4fd1c5;
+  --pred: #f6ad55;
+  --branch: #b794f4;
+  --anom: #fc8181;
+  --ok: #68d391;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font: 12px/1.45 ui-monospace, "SF Mono", Consolas, "Cascadia Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+}
+
+#gl { display: block; width: 100vw; height: 100vh; }
+
+.panel {
+  position: fixed;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 13px;
+  backdrop-filter: blur(9px);
+  z-index: 10;
+}
+
+/* ---- HUD (top left) ---- */
+#hud { top: 14px; left: 14px; min-width: 268px; }
+#hud .row { display: flex; align-items: center; gap: 8px; }
+#hud .title { margin-bottom: 9px; letter-spacing: 0.09em; }
+#hud .title b { color: #e6edf3; font-size: 12px; }
+#hud .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 16px;
+}
+#hud .grid > div { display: flex; justify-content: space-between; gap: 10px; }
+#hud label { color: var(--muted); }
+#hud .val { color: #e6edf3; font-variant-numeric: tabular-nums; }
+#hud .val.bad { color: var(--anom); }
+#hud .val.warn { color: var(--pred); }
+#hud .val.good { color: var(--ok); }
+
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); flex: none;
+}
+.dot.live { background: var(--ok); box-shadow: 0 0 7px var(--ok);
+  animation: pulse 1.6s infinite; }
+.dot.vault { background: var(--accent); }
+.dot.off { background: #3a4453; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+
+.muted { color: var(--muted); }
+
+#legend {
+  margin-top: 9px; padding-top: 8px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 6px 14px;
+}
+#legend .sw {
+  display: inline-block; width: 9px; height: 3px;
+  border-radius: 2px; margin-right: 5px; vertical-align: middle;
+}
+.sw.actual { background: var(--text); }
+.sw.pred { background: var(--pred); }
+.sw.branch { background: var(--branch); }
+.sw.anom { background: var(--anom); }
+
+/* ---- controls (bottom) ---- */
+#controls {
+  bottom: 14px; left: 14px; right: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+#controls .ctl {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+#controls .toggles { gap: 18px; color: var(--muted); }
+#controls .toggles label { display: flex; align-items: center; gap: 5px;
+  cursor: pointer; }
+
+button {
+  background: #16202e;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 11px;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+button:hover { background: #1e2b3c; border-color: #2d3d52; }
+button:active { background: #24344a; }
+button.on { border-color: var(--accent); color: var(--accent); }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: #24334a;
+  border-radius: 2px;
+  outline: none;
+  flex: 1;
+  min-width: 80px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); cursor: pointer;
+  border: none;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); cursor: pointer; border: none;
+}
+label { display: flex; align-items: center; gap: 6px; }
+
+select {
+  background: #16202e; color: var(--text);
+  border: 1px solid var(--border); border-radius: 5px;
+  padding: 4px 7px; font: inherit; cursor: pointer;
+}
+
+input[type="checkbox"] { accent-color: var(--accent); cursor: pointer; }
+
+#pos { min-width: 88px; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---- boot ---- */
+#boot {
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  text-align: center; padding: 22px 34px; letter-spacing: 0.08em;
+}
+#boot p { color: var(--muted); margin: 8px 0 0; }
+#boot.error b { color: var(--anom); }
+
+@media (max-width: 820px) {
+  #hud { min-width: 0; right: 14px; }
+  #controls { font-size: 11px; }
+}
